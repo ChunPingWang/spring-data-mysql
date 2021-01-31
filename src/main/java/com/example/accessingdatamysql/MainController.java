@@ -40,9 +40,24 @@ public class MainController {
 		return "Updated";
 	}
 
+	@GetMapping(path = "/one")
+	public @ResponseBody String findById(@RequestParam String id){
+		Integer userId = Integer.valueOf(id);
+		User user =  userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(id));
+		return "User : " + user.getName() + ", " + user.getEmail();
+	}
+
+
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<User> getAllUsers() {
 		// This returns a JSON or XML with the users
 		return userRepository.findAll();
+	}
+
+	@DeleteMapping (path = "/delete")
+	public @ResponseBody String deleteById(@RequestParam String id){
+		Integer userId = Integer.valueOf(id);
+		userRepository.deleteById(userId);
+		return "Deleted";
 	}
 }
